@@ -53,11 +53,11 @@ for k= 1:round(700 / 30)
 end
 %%%%%%%%%%%%%%%%%%%%%
 
-t1 = datetime(2019,11,15,8,0,0);
-t2 = datetime(2021,10,14,8,0,0);
+t1 = datetime(2019,11,15,1,0,0);
+t2 = datetime(2021,10,14,24,0,0);
 t = t1:caldays(tidsserie):t2;
-t_ = t1:caldays(30):t2;
-t_(24)=[];
+t_ = t1:caldays(31):t2;
+%t_(24)=[];
 
 data = readmatrix('ForbrukningsProfiler.xlsx');
 
@@ -82,12 +82,18 @@ end
 
 figure(6)
 plot(abs(HOUR_SUM1)/731)
+ylabel('Förbrukning Wh')
+xlabel('Timme på dygnet')
 
 figure(2)
 bar(t,total_dag)
+ylabel('Förbrukning Wh')
+xlabel('Datum')
 
 figure(3)
-plot(month_SUM)
+plot(t_,month_SUM)
+ylabel('Förbrukning Wh')
+xlabel('Datum')
 
 figure
 subplot(2,1,1)
