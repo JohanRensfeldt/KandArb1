@@ -1,3 +1,3 @@
-function dis= discharge1(cap)
+function dis= charge(cap,n)
     dis = cap - 5;
 end
