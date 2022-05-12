@@ -1,0 +1,15 @@
+testa olika värden för urladdning 
+
+fixa en rimligare urladdning 
+
+fixa att bilar laddar 
+
+testa olika scenarion, typ hur många platser skulle krävas för att gå plus minus noll
+
+fixa summan urladdning per timme
+
+kolla på om det gick att fixa över en längre tidsserie
+
+laddinfrastruktur (nästa tillfälle)
+
+
