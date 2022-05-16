@@ -1,5 +1,4 @@
 clear all
-close all
 data = readmatrix('ForbrukningsProfiler.xlsx');
 
 tot_hours = length(data);
@@ -23,10 +22,17 @@ end
 
 Hour_sum = abs(HOUR_SUM)./731;
 
-figure(6)
-plot(abs(HOUR_SUM)/731)
-ylabel('El användning Wh')
-xlabel('Tid på dygnet')
+%figure(6)
+%plot(abs(HOUR_SUM)/731)
+
+num_cars = [30 40 20 33 20 12 45 36 72 89 83 64 73  25 84 95 74 36 85 04 74 37 74 95 36 164];
+
+for i = num_cars
+    battery_cap3(i) = 
+end
+
+
+
 batteri = normrnd(50,15);
 
 
@@ -39,7 +45,24 @@ energy_covered = zeros(24,731);
 
 A_2 = zeros(24,713);
 
+%for i = 1 : 24
+%    num_car(i) = randi(200);
+%    battery_cap(i) = normrnd(50,15) * num_car(i);
+%end
 
+for i = 1 : randi(200)
+    battery_cap2(i) = normrnd(50,15);
+end
+n = 1;
+for i = 1 : 731
+    for h = 1 : 24
+        num_car(i) = randi(200);
+        battery_cap(i) = normrnd(50,15) * num_car(i);
+        A_2(h,i) = normrnd(50,15) * cars;
+        n = n + 1 ;
+    end
+end
+%plot(tot_energy)
 
 
 
