@@ -208,4 +208,7 @@ for i = 1 : 3
     procent(i) = ((sum(data)/sum(avg(:,i)))-1) * 100;
     differans(i) = sum(data) - sum(avg(:,i));
     diff_topplast(i) = 100 - (max(data)\max(avg(:,i))) * 100;
+    disp(differans(i))
+    disp(diff_topplast(i))
+    disp(procent(i))
 end
