@@ -8,7 +8,6 @@ data = readmatrix('2001410297_UPP735999100016201944_20220418-20220418A.xlsx');
 %t2 = datetime(2022,01,18,23,0,0);
 %time = t1:hours:t2;
 time = linspace(1,24,24);
-
 % nedan defineras alla parametrar för som vi kommera att undersöka
 % dom defineras i en vektor för att vi ska kunna iterera över dom i loopen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,7 +25,7 @@ discharge_diff = [8 12 16];
 
 % antalet iterationer som man vill att den ska köra för att sedan ta
 % ett medelvärde av alla iterationer
-number_of_runs = 100000;
+number_of_runs = 100;
 
 % deklarera de olika vektiorerna    
 diff = zeros(24,3); % för att spara diffen mellan förbrukning och V2G
@@ -67,12 +66,13 @@ for lap = 1:number_of_runs % loopar över antalet iterationer som vi deklarerat
                 if i > parking_size(choice)
                     for a = 17 : 21 % avser att det är timme 17 till 21 
                         if cap - discharge_diff(choice) > battery_size_mean(choice) * SOC_limit(choice) && data(a) > 300
-                            cap = discharge(cap,choice,diff(a,choice),data(a));                
-                            A(i,a) = cap; 
+                            cap = discharge(cap,choice,diff(a,choice),c);                
+                            A(i,a) = cap;
+                           
                         else % om den inte har tillräcklig kapacitet för att
                             % ladda ur efter en viss tids urladdning så
                             % ska den inte göra någonting
-                            A(i,a) = cap; 
+                            A(i,a) = cap;
                         end
                     end
                 else
@@ -194,14 +194,19 @@ end
 hold off
 
 % nedan plottar resultatet som stapeldiagram
+
+
+
 for i  = 1:3
+    %diff(1:13,i) = 0;
+    %diff(21:24,i) = 0;
     figure(i+3)
     bar(time,data)
     hold on 
-    bar(time,tot(2:end,i))
+    bar(time,-tot(2:end,i))
     ylabel('kWh')
     xlabel('Tid på dygnet')
-    legend('Förbrukning','Tillgänligt V2G','Location','northwest')
+    legend('Förbrukning','Flöde V2G','Location','northwest')
 end
 
 for i = 1 : 3

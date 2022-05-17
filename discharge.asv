@@ -1,35 +1,26 @@
-function dis= discharge(cap,n,diff,c)
-if n > 1
-    if diff < 150 
-        dis = cap - 1;
-    else
-        if n == 1
-            dis = cap - 7;
-        elseif n == 2
-            dis = cap - 10;
-        else
-            dis = cap - 11;
-        end
-    end
-elseif n == 1
-    if c == 16
-        dis = cap - 4;
-    else
-        if n == 1
-            dis = cap - 7;
-        elseif n == 2
-            dis = cap - 10;
-        else
-            dis = cap - 11;
-        end
-    end
+function dis= discharge(cap,n,diff,c,tot)
+if n > 1 && diff < 150
+    dis = cap;
+elseif n == 1 && c == 16
+    dis = cap - 4;
+elseif tot > 200 && n == 3 
+    dis = cap -1;
 else
     if n == 1
-        dis = cap - 7;
+        dis = cap - 6;
     elseif n == 2
-        dis = cap - 10;
+        dis = cap - 8;
+    elseif n == 3 && diff < 150
+        dis = cap - 2;
+    elseif n == 3 && diff > 150
+        dis = cap - 5;
+    elseif n == 3 && diff > 10
+        dis = cap - 12;
+    elseif n == 3 && diff > 180
+        dis = cap - 8;
     else
-        dis = cap - 11;
+       dis = cap - 3;
     end
+end
 end
 

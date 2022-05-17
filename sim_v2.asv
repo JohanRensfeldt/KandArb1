@@ -4,8 +4,8 @@ close all
 data = readmatrix('2001410297_UPP735999100016201944_20220418-20220418A.xlsx');
 
 % tidsserier för att kunna plotta föbrukningsdatan som en funktion av tid
-t1 = datetime(2022,01,18,00,0,0);
-t2 = datetime(2022,01,18,23,0,0);
+%t1 = datetime(2022,01,18,00,0,0);
+%t2 = datetime(2022,01,18,23,0,0);
 %time = t1:hours:t2;
 time = linspace(1,24,24);
 
@@ -26,7 +26,7 @@ discharge_diff = [8 12 16];
 
 % antalet iterationer som man vill att den ska köra för att sedan ta
 % ett medelvärde av alla iterationer
-number_of_runs = 1000;
+number_of_runs = 10;
 
 % deklarera de olika vektiorerna    
 diff = zeros(24,3); % för att spara diffen mellan förbrukning och V2G
@@ -67,7 +67,7 @@ for lap = 1:number_of_runs % loopar över antalet iterationer som vi deklarerat
                 if i > parking_size(choice)
                     for a = 17 : 21 % avser att det är timme 17 till 21 
                         if cap - discharge_diff(choice) > battery_size_mean(choice) * SOC_limit(choice) && data(a) > 300
-                            cap = discharge(cap,choice);                
+                            cap = discharge(cap,choice,diff(a,choice),data(a));                
                             A(i,a) = cap; 
                         else % om den inte har tillräcklig kapacitet för att
                             % ladda ur efter en viss tids urladdning så
@@ -78,7 +78,7 @@ for lap = 1:number_of_runs % loopar över antalet iterationer som vi deklarerat
                 else
                     for c = 13 : 17 % timme 13 till 21
                         if cap - discharge_diff(choice) > battery_size_mean(choice) * SOC_limit(choice) && data(c) > 300
-                            cap = discharge(cap,choice,diff((c(c))),data(c));
+                            cap = discharge(cap,choice,diff(c,choice),c);
                             A(i,c) = cap;
                         else               
                             A(i,c) = cap; 
@@ -141,7 +141,7 @@ for lap = 1:number_of_runs % loopar över antalet iterationer som vi deklarerat
             end
         end
 %%%%%%%%%%%%%%%%%%%%%
-        tot(18,choice) = mean(tot(:,choice),'all'); % rad 17 blir ett problem men 
+        tot(18,choice) = mean(tot(14:21,choice)) + 100; % rad 17 blir ett problem men 
         %löses här genom att den helt enkelt är lika med medelvärdet av tot
 
 % nedan är för att räkna ut differansen mellan tillförd och förbrukad el
@@ -194,18 +194,26 @@ end
 hold off
 
 % nedan plottar resultatet som stapeldiagram
+
+
+
 for i  = 1:3
+    %diff(1:13,i) = 0;
+    %diff(21:24,i) = 0;
     figure(i+3)
     bar(time,data)
     hold on 
     bar(time,tot(2:end,i))
     ylabel('kWh')
     xlabel('Tid på dygnet')
-    legend('Förbrukning','Tillgänligt V2G','Location','northwest')
+    legend('Förbrukning','Flöde V2G','Location','northwest')
 end
 
 for i = 1 : 3
-    procent(i) = 100 - (sum(data)\sum(diff(:,i)) * 100);
-    differans(i) = sum(data) - sum(diff(:,i));
-    diff_topplast(i) = max(data)\max(diff(:,3))*100;
+    procent(i) = ((sum(data)/sum(avg(:,i)))-1) * 100;
+    differans(i) = sum(data) - sum(avg(:,i));
+    diff_topplast(i) = 100 - (max(data)\max(avg(:,i))) * 100;
+    disp(differans(i))
+    disp(diff_topplast(i))
+    disp(procent(i))
 end
