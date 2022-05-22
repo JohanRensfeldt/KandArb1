@@ -1,3 +1,6 @@
+% Johan Rensfeldt kandidatarbete 2022 VT. koden är skriven för att simulera
+% tillförsen av el till Studenternas IP under ett evenemang.
+
 clear all
 close all
 
