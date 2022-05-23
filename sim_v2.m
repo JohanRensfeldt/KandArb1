@@ -198,11 +198,7 @@ hold off
 
 % nedan plottar resultatet som stapeldiagram
 
-
-
 for i  = 1:3
-    %diff(1:13,i) = 0;
-    %diff(21:24,i) = 0;
     figure(i+3)
     bar(time,data)
     hold on 
